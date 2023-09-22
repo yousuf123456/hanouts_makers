@@ -161,7 +161,8 @@ model Product {
   questionsCount Int @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  clicks Int @default(0)
+  numOfSales Int @default(0)
   storeId String @db.ObjectId
   store Store @relation(fields: [storeId], references: [id])
 
@@ -174,9 +175,19 @@ model Product {
   favouritedByIds String[] @db.ObjectId
   favouritedBy User[] @relation(fields: [favouritedByIds], references: [id])
 
+  // orderIds String[] @db.ObjectId
+  // orders Order[] @relation(fields: [orderIds], references: [id])
+
   ratingAndReviews RatingAndReview[]
   questions Question[]
   cartItems CartItem[]
+}
+
+model ProductClick {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  productId String
+  storeId String
 }
 
 model Keyword {
@@ -219,6 +230,9 @@ model Order {
   associatedStoreIds String[] @db.ObjectId
   associatedStores Store[] @relation(fields: [associatedStoreIds], references: [id])
 
+  // productIds String[] @db.ObjectId
+  // products Product[] @relation(fields: [productIds], references: [id])
+
   transaction Transaction?
 } 
 
@@ -227,6 +241,7 @@ model Package {
   ammount Int
   storeId String
   status String
+  createdAt DateTime @default(now())
   delieveredAt DateTime? @updatedAt
 
   orderedProducts OrderedProduct[]

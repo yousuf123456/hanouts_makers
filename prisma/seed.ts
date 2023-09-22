@@ -1,17 +1,31 @@
+import { metadata } from "./../app/layout";
 import prisma from "../app/libs/prismadb";
 
 async function main() {
   //Updating vendors
 
-  const vendors = await prisma.vendor.findMany({ take: 10 });
+  const allOrderedProducts = (await prisma.orderedProduct.findMany({
+    select: { product: true },
+  })) as any;
+  const allProducts = await prisma.product.findMany({
+    select: {
+      id: true,
+    },
+  });
 
-  vendors.map(async (vendor, i) => {
-    await prisma.vendor.update({
+  allProducts.map(async (product) => {
+    let salesCount = 0;
+    
+    allOrderedProducts.map((orderedProduct: any) => {
+      if (orderedProduct.product.id === product.id) salesCount += 1;
+    });
+
+    await prisma.product.update({
       where: {
-        id: vendor.id,
+        id: product.id,
       },
       data: {
-        superTokensUserId: String(i),
+        numOfSales: salesCount,
       },
     });
   });

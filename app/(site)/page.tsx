@@ -15,16 +15,17 @@ import { getServerSession } from "../actions/getServerSession";
 
 export default async function IndexPage() {
   // const currentVendor = await fetch(
-  //   "http://localhost:3000/api/getCurrentVendor",
+  //   "http://localhost:3000/api/updateSessionData",
   //   {
-  //     headers: {
-  //       // "x-user-id": "62186b46-011a-4d61-b3b9-7547f315961d",
-  //       cookie: `sAccessToken=${access_token}`,
-  //       // Authorization: `Bearer ${access_token}`,
-  //     },
+  //     // headers: {
+  //     //   // "x-user-id": "62186b46-011a-4d61-b3b9-7547f315961d",
+  //     //   cookie: `sAccessToken=${access_token}`,
+  //     //   // Authorization: `Bearer ${access_token}`,
+  //     // },
   //     method: "post",
   //   }
   // );
+  // console.log(await currentVendor.json());
 
   return (
     <div className="bg-white">

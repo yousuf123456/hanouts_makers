@@ -14,6 +14,10 @@ export async function POST(req: NextRequest) {
   // await session!.updateSessionDataInDatabase({
   //   userId: userId,
   // });
-
-  return NextResponse.json("Successfully updated the session data");
+  try {
+    return NextResponse.json("Successfully updated the session data");
+  } catch (e) {
+    console.log(e);
+    return new NextResponse("Error", { status: 500 });
+  }
 }
