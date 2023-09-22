@@ -40,6 +40,12 @@ export const SignUpForm: any = () => {
   const onClick = () => setShow((show) => !show);
   const onClick2 = () => setShow2((show) => !show);
 
+  useEffect(() => {
+    axios
+      .post("http://localhost:3000/api/updateSessionData")
+      .then(async (res) => console.log(res));
+  }, []);
+
   const eyeIcon = show ? (
     <HiEyeOff className={iconClassName} onClick={onClick} />
   ) : (

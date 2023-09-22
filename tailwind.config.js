@@ -91,7 +91,7 @@ module.exports = {
     },
   },
   plugins: [
-    nextui({ defaultTheme: "light" }),
+    nextui({ defaultTheme: "light", defaultExtendTheme: "light" }),
     require("tailwindcss-animate"),
     require("tailwind-scrollbar"),
     require("tailwindcss-gradients"),

@@ -1,3 +1,15 @@
+import {
+  BoxIcon,
+  CogIcon,
+  CurrencyIcon,
+  DollarSignIcon,
+  FileBarChart,
+  PhoneCallIcon,
+  Settings,
+} from "lucide-react";
+import { routes } from "./routes";
+import { HiLightBulb, HiSupport, HiTruck } from "react-icons/hi";
+
 export const handoutsFeatures = [
   {
     heading: "Reach",
@@ -61,4 +73,155 @@ export const sellerAccountVerificationSteps = [
   "Add Profile",
   "Add Address",
   "Verify Id & Bank",
+];
+
+const dashboardRoutes = routes;
+export const dashboardSideBarLinks = [
+  {
+    label: "Product",
+    Icon: BoxIcon,
+    root: true,
+    childs: [
+      {
+        label: "Manage Products",
+        href: dashboardRoutes.manageProducts,
+      },
+      {
+        label: "Media Center",
+        href: dashboardRoutes.mediaCenter,
+      },
+      {
+        label: "Add Product",
+        href: dashboardRoutes.addProduct,
+      },
+      {
+        label: "Bulk Add/Edit Products",
+        href: dashboardRoutes.bulkAddEditProducts,
+      },
+    ],
+  },
+
+  {
+    label: "Orders & Reviews",
+    Icon: HiTruck,
+    root: true,
+    childs: [
+      {
+        label: "Manage Orders",
+        href: dashboardRoutes.manageOrders,
+      },
+      {
+        label: "Manage Reviews",
+        href: dashboardRoutes.manageReviews,
+      },
+      {
+        label: "Customer Returns",
+        href: dashboardRoutes.customerReturs,
+      },
+    ],
+  },
+
+  {
+    label: "Analytics & Performance",
+    Icon: FileBarChart,
+    root: true,
+    childs: [
+      {
+        label: "Performance & Analytics",
+        href: dashboardRoutes.analytics_performance,
+      },
+      {
+        label: "Geo Analytics",
+        href: dashboardRoutes.geoAnalytics,
+      },
+    ],
+  },
+
+  {
+    label: "Marketing Solutions",
+    Icon: HiLightBulb,
+    root: true,
+    childs: [
+      {
+        label: "Product Ads",
+        href: dashboardRoutes.productAd,
+      },
+      {
+        label: "Display Ads",
+        href: dashboardRoutes.displayAd,
+      },
+      {
+        label: "Ad Groups",
+        href: dashboardRoutes.adGroups,
+      },
+      {
+        label: "Ad Performance",
+        href: dashboardRoutes.adPerformance,
+      },
+      {
+        label: "Private Traffic",
+        href: dashboardRoutes.privateTraffic,
+      },
+      {
+        label: "PT Performance",
+        href: dashboardRoutes.PT_performance,
+      },
+    ],
+  },
+
+  {
+    label: "Finance",
+    Icon: DollarSignIcon,
+    root: true,
+    childs: [
+      {
+        label: "Account Statements",
+        href: dashboardRoutes.accountStatements,
+      },
+      {
+        label: "Orders Overview",
+        href: dashboardRoutes.ordersOverview,
+      },
+      {
+        label: "Transaction Overview",
+        href: dashboardRoutes.transactionsOverview,
+      },
+    ],
+  },
+
+  {
+    label: "Support",
+    Icon: PhoneCallIcon,
+    root: true,
+    childs: [
+      {
+        label: "Help Center",
+        href: dashboardRoutes.helpCenter,
+      },
+      {
+        label: "Contact us",
+        href: dashboardRoutes.contactUs,
+      },
+    ],
+  },
+
+  {
+    label: "Account & Settings",
+    Icon: Settings,
+    root: true,
+    childs: [
+      {
+        label: "Profile",
+        href: dashboardRoutes.profile,
+      },
+      {
+        label: "Account Settings",
+        href: dashboardRoutes.accountSettings,
+      },
+      {
+        label: "Chat Settings",
+        href: dashboardRoutes.chatSettings,
+      },
+    ],
+  },
 ];

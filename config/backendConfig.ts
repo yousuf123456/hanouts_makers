@@ -44,10 +44,6 @@ export const backendConfig = () => {
           ],
         },
       }),
-      // EmailVerification.init({
-      //   mode: "REQUIRED",
-      // }),
-      UserMetadata.init(),
       Dashboard.init(),
     ],
     isInServerlessEnv: true,

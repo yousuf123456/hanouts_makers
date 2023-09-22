@@ -52,7 +52,6 @@ export const CurrentFormProgress: React.FC<CurrentFormProgressProps> = ({
 
       <Progress
         size="sm"
-        color="success"
         value={
           ((sellerAccountVerificationSteps.indexOf(currentStep) + 1) / 3) * 100
         }

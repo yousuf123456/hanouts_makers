@@ -1,11 +1,23 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Poppins, Nunito } from "next/font/google";
 import { NextUiProvider } from "./context/NextUiProvider";
 import { SuperTokensProvider } from "./context/SuperTokensProvider";
 import { ProtectedLayer } from "./context/ProtectedLayer";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-poppins",
+});
+
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-nunito",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${poppins.variable} ${nunito.variable}`}>
       <body className={inter.className}>
         <SuperTokensProvider>
           <NextUiProvider>
