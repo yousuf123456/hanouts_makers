@@ -3,22 +3,18 @@ import React, { useEffect, useState } from "react";
 import { Chart } from "./Chart";
 import { TotalRevenueChartId } from "@/app/constants/charts";
 import { ChartsDateRanges } from "./ChartsDateRanges";
+
 import {
   TotalChartsDateRanges,
   TotalChartsDateRangesDefault,
 } from "@/app/constants/selectOptions";
 
-export const TotalRevenueChart = ({ storeId }: { storeId: string }) => {
+export const TotalRevenueChart = ({
+  accessToken,
+}: {
+  accessToken: string | undefined;
+}) => {
   const [filter, setFilter] = useState<{}>({});
-
-  useEffect(() => {
-    if (storeId) {
-      setFilter({
-        storeId: storeId,
-        status: { $nin: ["Cancelled"] },
-      });
-    }
-  }, [storeId]);
 
   return (
     <div className="flex flex-col gap-4 items-center">
@@ -35,6 +31,7 @@ export const TotalRevenueChart = ({ storeId }: { storeId: string }) => {
         height={200}
         theme="light"
         filter={filter}
+        accessToken={accessToken}
         chartId={TotalRevenueChartId}
       />
     </div>

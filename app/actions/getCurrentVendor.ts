@@ -22,7 +22,7 @@ export const getCurrentVendor = async (params: Params = {}) => {
     include: {
       ...(getStore ? { store: { select: { id: true } } } : {}),
     },
-  })) as VendorType;
+  })) as unknown as VendorType;
 
   return currentVendor;
 };

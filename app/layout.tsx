@@ -4,6 +4,7 @@ import { Inter, Poppins, Nunito } from "next/font/google";
 import { NextUiProvider } from "./context/NextUiProvider";
 import { SuperTokensProvider } from "./context/SuperTokensProvider";
 import { ProtectedLayer } from "./context/ProtectedLayer";
+import { TanstackProvider } from "./context/TanstackProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,9 +34,11 @@ export default function RootLayout({
     <html lang="en" className={`${poppins.variable} ${nunito.variable}`}>
       <body className={inter.className}>
         <SuperTokensProvider>
-          <NextUiProvider>
-            <ProtectedLayer>{children}</ProtectedLayer>
-          </NextUiProvider>
+          <TanstackProvider>
+            <NextUiProvider>
+              <ProtectedLayer>{children}</ProtectedLayer>
+            </NextUiProvider>
+          </TanstackProvider>
         </SuperTokensProvider>
       </body>
     </html>

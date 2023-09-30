@@ -61,11 +61,11 @@ export const SelectOptions: React.FC<SelectOptionsProps> = ({
       <SelectContent
         className={clsx(
           "z-[1000] max-h-72 w-full overflow-y-auto",
-          isLoading && "opacity-60",
+          isLoading && "opacity-60"
         )}
       >
         <SelectGroup>
-          <SelectLabel>{label}</SelectLabel>
+          <SelectLabel className=" capitalize">{label}</SelectLabel>
           {itemsToMapOver?.map((option: any, i: number) => (
             <SelectItem key={i} value={option.label || option}>
               {option.label || option}

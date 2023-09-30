@@ -8,17 +8,12 @@ import {
   TotalChartsDateRangesDefault,
 } from "@/app/constants/selectOptions";
 
-export const TotalSalesChart = ({ storeId }: { storeId: string }) => {
+export const TotalSalesChart = ({
+  accessToken,
+}: {
+  accessToken: string | undefined;
+}) => {
   const [filter, setFilter] = useState<{}>({});
-
-  useEffect(() => {
-    if (storeId) {
-      setFilter({
-        storeId: storeId,
-        status: { $nin: ["Cancelled"] },
-      });
-    }
-  }, [storeId]);
 
   return (
     <div className="flex flex-col gap-4 items-center">
@@ -35,6 +30,7 @@ export const TotalSalesChart = ({ storeId }: { storeId: string }) => {
         height={200}
         theme="light"
         filter={filter}
+        accessToken={accessToken}
         chartId={TotalSalesChartId}
       />
     </div>

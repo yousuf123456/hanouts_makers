@@ -1,4 +1,6 @@
 import React from "react";
+
+import { cookies } from "next/headers";
 import { SalesChart } from "./SalesChart";
 import { RevenueChart } from "./RevenueChart";
 import { ClicksEngangementChart } from "./ClicksEngangementChart";
@@ -7,21 +9,23 @@ import { SalesConversionChart } from "./SalesConversionChart";
 import { TotalRevenueChart } from "./TotalRevenueChart";
 import { TotalSalesChart } from "./TotalSalesChart";
 
-export const AnalyticsAndPerformance = ({ storeId }: { storeId: string }) => {
+export const AnalyticsAndPerformance = () => {
+  const accessToken = cookies().get("sAccessToken")?.value;
+
   return (
     <div className="flex flex-col gap-8 items-center">
       <div className="w-full flex items-center justify-around p-4 bg-blue-100 rounded-md">
-        <TotalRevenueChart storeId={storeId} />
-        <TotalSalesChart storeId={storeId} />
+        <TotalRevenueChart accessToken={accessToken} />
+        <TotalSalesChart accessToken={accessToken} />
       </div>
 
-      <SalesChart storeId={storeId} />
-      <RevenueChart storeId={storeId} />
-      <ClicksEngangementChart storeId={storeId} />
+      <SalesChart accessToken={accessToken} />
+      <RevenueChart accessToken={accessToken} />
+      <ClicksEngangementChart accessToken={accessToken} />
 
       <div className="w-full flex justify-around items-center">
-        <SalesByCategoryChart storeId={storeId} />
-        <SalesConversionChart storeId={storeId} />
+        <SalesByCategoryChart accessToken={accessToken} />
+        <SalesConversionChart accessToken={accessToken} />
       </div>
     </div>
   );

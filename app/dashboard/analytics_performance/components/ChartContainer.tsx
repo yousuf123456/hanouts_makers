@@ -5,5 +5,9 @@ interface ChartContainerProps {
 }
 
 export const ChartContainer: React.FC<ChartContainerProps> = ({ children }) => {
-  return <div className="flex flex-col gap-4">{children}</div>;
+  return (
+    <div id="chartContainer" className="flex flex-col gap-4">
+      {children}
+    </div>
+  );
 };

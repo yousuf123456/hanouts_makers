@@ -27,19 +27,20 @@ model User {
   addressDiary Json[] 
   cartItemsCount Int?
 
-  accounts Account[]
   orders Order[]
+  accounts Account[]
+  packages Package[]
   cartItems CartItem[]
-  paymentOptions PaymentOption[] @relation("userPaymentOptions")
-  ratingAndReviews RatingAndReview[]
   questions Question[]
+  ratingAndReviews RatingAndReview[]
+  paymentOptions PaymentOption[] @relation("userPaymentOptions")
 
-  favouriteItemIds String[] @db.ObjectId
-  favouriteItems Product[] @relation(fields: [favouriteItemIds], references: [id])
-  searchIds String[] @db.ObjectId
-  searches Search[] @relation(fields: [searchIds], references: [id])
-  cancellationRequests CancellationRequest[]
   returnRequests ReturnRequest[]
+  searchIds String[] @db.ObjectId
+  favouriteItemIds String[] @db.ObjectId
+  cancellationRequests CancellationRequest[]
+  searches Search[] @relation(fields: [searchIds], references: [id])
+  favouriteItems Product[] @relation(fields: [favouriteItemIds], references: [id])
 
   behaviour UserBehaviour?
 }
@@ -126,14 +127,18 @@ model Store {
   vendorId String @db.ObjectId @unique
   vendor Vendor @relation(fields: [vendorId], references: [id])    
 
-  products Product[]
-
   orderIds String[] @db.ObjectId
   orders Order[] @relation(fields: [orderIds], references: [id])
-  discounts Discount[]
+  
+  returnRequestIds String[] @db.ObjectId
+  returnRequests ReturnRequest[] @relation(fields: [returnRequestIds], references: [id])
+
   coupons Coupon[]
-  ratingAndReviews RatingAndReview[]
+  products Product[]
+  discounts Discount[]
   questions Question[]
+  orderedProducts OrderedProduct[]
+  ratingAndReviews RatingAndReview[]
 }   
 
 model Product {
@@ -164,6 +169,7 @@ model Product {
   clicks Int @default(0)
   numOfSales Int @default(0)
   storeId String @db.ObjectId
+  superTokensUserId String
   store Store @relation(fields: [storeId], references: [id])
 
   discountId String? @db.ObjectId
@@ -186,6 +192,7 @@ model Product {
 model ProductClick {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
+  superTokensUserId String
   productId String
   storeId String
 }
@@ -193,6 +200,17 @@ model ProductClick {
 model Keyword {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
+}
+
+model Attribute {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  options String[]
+  select Boolean @default(false)
+  multiSelect Boolean @default(false)
+
+  categoryIds String[] @db.ObjectId
+  categories Category[] @relation(fields: [categoryIds], references: [id])
 }
 
 model Category {
@@ -203,8 +221,9 @@ model Category {
 
   parent Category? @relation("SubCategories", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   parentId String? @db.ObjectId
-  // productIds String[] @db.ObjectId
-  // products Product[] @relation(fields: [productIds], references: [id])
+
+  attributeIds String[] @db.ObjectId
+  attributes Attribute[] @relation(fields: [attributeIds], references: [id])
 }
 
 model Sales {
@@ -230,9 +249,6 @@ model Order {
   associatedStoreIds String[] @db.ObjectId
   associatedStores Store[] @relation(fields: [associatedStoreIds], references: [id])
 
-  // productIds String[] @db.ObjectId
-  // products Product[] @relation(fields: [productIds], references: [id])
-
   transaction Transaction?
 } 
 
@@ -241,6 +257,7 @@ model Package {
   ammount Int
   storeId String
   status String
+  superTokensUserId String?
   createdAt DateTime @default(now())
   delieveredAt DateTime? @updatedAt
 
@@ -248,6 +265,9 @@ model Package {
 
   orderId String @db.ObjectId
   order Order @relation(fields: [orderId], references: [id])
+
+  customerId String @db.ObjectId
+  customer User @relation(fields: [customerId], references: [id])
 }
 
 model OrderedProduct {
@@ -258,6 +278,7 @@ model OrderedProduct {
   returnReason String?
   quantity Int 
   priceAtOrderTime Int
+  superTokensUserId String?
   selectedCombination Json?
   hasBeenReviewed Boolean @default(false)
   product Json?
@@ -270,6 +291,11 @@ model OrderedProduct {
 
   returnRequestId String? @db.ObjectId
   returnRequest ReturnRequest? @relation(fields: [returnRequestId], references: [id])
+
+  storeId String @db.ObjectId
+  store Store @relation(fields: [storeId], references: [id])
+
+  ratingAndReview RatingAndReview[]
 }
 
 model CancellationRequest {
@@ -298,6 +324,9 @@ model ReturnRequest {
   status String
 
   orderedProducts OrderedProduct[]
+
+  storeIds String[] @db.ObjectId
+  stores Store[] @relation(fields: [storeIds], references: [id])
 
   orderId String @db.ObjectId
   order Order @relation(fields: [orderId], references: [id])
@@ -409,6 +438,9 @@ model RatingAndReview {
 
   productId String @db.ObjectId
   product Product @relation(fields: [productId], references: [id])
+
+  orderedProductId String @db.ObjectId
+  orderedProduct OrderedProduct @relation(fields: [orderedProductId], references: [id])
 }
 
 model Question {

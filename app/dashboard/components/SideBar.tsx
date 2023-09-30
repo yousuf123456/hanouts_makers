@@ -17,7 +17,7 @@ export const SideBar = () => {
       />
       <div
         className={cn(
-          "w-72 fixed left-0 top-0 flex-shrink-0 min-h-screen shadow-xl transition-all duration-300",
+          "w-72 z-[999] fixed left-0 top-0 flex-shrink-0 min-h-screen shadow-xl transition-all duration-300",
           close && "w-20"
         )}
       >

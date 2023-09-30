@@ -1,9 +1,24 @@
-import { PaymentOption, Store, Transaction } from "@prisma/client";
+import {
+  Attribute,
+  Category,
+  PaymentOption,
+  Store,
+  Transaction,
+} from "@prisma/client";
 
 export type SellerAccountVerificationStepsType =
   | "Add Profile"
   | "Add Address"
   | "Verify Id & Bank";
+
+export type CategoryType = {
+  name: string;
+  hasChilds: boolean;
+  _id: { $oid: string };
+  parentId: { $oid: string };
+};
+
+export type AttributeType = Attribute;
 
 export type VendorType = {
   id: String;
@@ -34,6 +49,7 @@ export type VendorType = {
   } | null;
 
   superTokensUserId: String;
+  storeId: string;
   createdAt: Date;
   updatedAt: Date;
 
@@ -43,3 +59,18 @@ export type VendorType = {
   paymentOptions?: PaymentOption[];
   store?: Store | null;
 };
+
+export type StatusType =
+  | "Payment Pending"
+  | "Processing"
+  | "Shipped"
+  | "Delievered"
+  | "Cancelled"
+  | "Cancellation in Process";
+
+export type ReturnStatusType =
+  | "Return in Process"
+  | "Approved"
+  | "Rejected"
+  | "Refund Pending"
+  | "Refunded";
