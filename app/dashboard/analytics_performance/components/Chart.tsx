@@ -1,6 +1,8 @@
 "use client";
+
 import { ChartsBaseUrl } from "@/app/constants/charts";
 import React, { useEffect, useRef, useState } from "react";
+import Session from "supertokens-web-js/recipe/session";
 import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
 
 interface ChartProps {
@@ -8,7 +10,9 @@ interface ChartProps {
   width: number;
   height: number;
   chartId: string;
+  dynamicWidth?: boolean;
   theme?: "dark" | "light";
+  accessToken: string | undefined;
 }
 
 export const Chart: React.FC<ChartProps> = ({
@@ -17,9 +21,14 @@ export const Chart: React.FC<ChartProps> = ({
   height,
   filter,
   chartId,
+  dynamicWidth,
+  accessToken,
 }) => {
   const sdk = new ChartsEmbedSDK({
     baseUrl: ChartsBaseUrl,
+    getUserToken: () => {
+      return accessToken || "";
+    },
   });
 
   const chartDiv = useRef(null);

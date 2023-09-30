@@ -34,10 +34,15 @@ export const RootSidebarLink: React.FC<RootSidebarLinkProps> = ({
   const [open, setOpen] = useState(isSelectedFromThisRoot);
 
   const toolTipContent = (
-    <div className="flex flex-col gap-4 p-3 rounded-md shadow-md">
+    <div className="flex flex-col gap-4 p-3 rounded-md shadow-md bg-white">
       {childs.map((childRoute, i) => (
         <Link href={childRoute.href} key={i}>
-          <p className="text-sm cursor-pointer hover:text-themeBlue text-slate-600 font-text">
+          <p
+            className={cn(
+              "text-sm cursor-pointer hover:text-themeBlue text-slate-600 font-text",
+              childRoute.href === pathname && "text-themeBlue"
+            )}
+          >
             {childRoute.label}
           </p>
         </Link>
@@ -47,12 +52,16 @@ export const RootSidebarLink: React.FC<RootSidebarLinkProps> = ({
 
   return (
     <div className="flex flex-col gap-2">
-      <Tooltip placement="right" content={collapsed && toolTipContent}>
-        <div className="px-2">
+      <Tooltip
+        placement="right"
+        className=" opacity-100"
+        content={collapsed && toolTipContent}
+      >
+        <div className="px-0">
           <div
             onClick={() => setOpen((prev) => !prev)}
             className={cn(
-              "p-2 group rounded-md transition-all cursor-pointer hover:bg-blue-50",
+              "p-2 group transition-all relative cursor-pointer hover:bg-blue-50",
               open && " bg-blue-50",
               collapsed && "hover:bg-blue-50",
               collapsed && open && "bg-blue-50"
@@ -60,10 +69,17 @@ export const RootSidebarLink: React.FC<RootSidebarLinkProps> = ({
           >
             <div
               className={cn(
-                "flex justify-between items-center gap-3",
+                "pl-3 flex justify-between items-center gap-3",
                 collapsed && "justify-center"
               )}
             >
+              <div
+                className={cn(
+                  " bg-transparent group-hover:bg-themeBlue h-[26px] w-[5px] absolute left-0 top-1/2 -translate-y-1/2 rounded-r-md transition-all",
+                  open && "bg-themeBlue"
+                )}
+              />
+
               <div className="flex gap-3 items-center">
                 <Icon
                   className={cn(
@@ -100,8 +116,12 @@ export const RootSidebarLink: React.FC<RootSidebarLinkProps> = ({
 
       {open && !collapsed && (
         <div className="flex flex-col gap-0">
-          {childs.map((childRoute) => (
-            <SidebarLink label={childRoute.label} href={childRoute.href} />
+          {childs.map((childRoute, i) => (
+            <SidebarLink
+              key={i}
+              label={childRoute.label}
+              href={childRoute.href}
+            />
           ))}
         </div>
       )}

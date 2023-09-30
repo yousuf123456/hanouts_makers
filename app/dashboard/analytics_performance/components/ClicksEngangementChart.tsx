@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Session from "supertokens-web-js/recipe/session";
 import { Chart } from "./Chart";
 import { EngagementChartId } from "@/app/constants/charts";
 import { ChartContainer } from "./ChartContainer";
@@ -9,16 +10,12 @@ import {
   GraphChartsDateRangesDefault,
 } from "@/app/constants/selectOptions";
 
-export const ClicksEngangementChart = ({ storeId }: { storeId: string }) => {
+export const ClicksEngangementChart = ({
+  accessToken,
+}: {
+  accessToken: string | undefined;
+}) => {
   const [filter, setFilter] = useState<{}>();
-
-  useEffect(() => {
-    if (storeId) {
-      setFilter({
-        storeId: storeId,
-      });
-    }
-  }, [storeId]);
 
   return (
     <ChartContainer>
@@ -31,8 +28,9 @@ export const ClicksEngangementChart = ({ storeId }: { storeId: string }) => {
       <Chart
         width={900}
         height={500}
-        chartId={EngagementChartId}
         filter={filter}
+        accessToken={accessToken}
+        chartId={EngagementChartId}
       />
     </ChartContainer>
   );

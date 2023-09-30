@@ -9,17 +9,12 @@ import {
   GraphChartsDateRangesDefault,
 } from "@/app/constants/selectOptions";
 
-export const RevenueChart = ({ storeId }: { storeId: string }) => {
+export const RevenueChart = ({
+  accessToken,
+}: {
+  accessToken: string | undefined;
+}) => {
   const [filter, setFilter] = useState<{}>();
-
-  useEffect(() => {
-    if (storeId) {
-      setFilter({
-        storeId: storeId,
-        status: { $nin: ["Cancelled"] },
-      });
-    }
-  }, [storeId]);
 
   return (
     <ChartContainer>
@@ -32,8 +27,10 @@ export const RevenueChart = ({ storeId }: { storeId: string }) => {
       <Chart
         width={900}
         height={500}
-        chartId={RevenueChartId}
+        dynamicWidth
         filter={filter}
+        chartId={RevenueChartId}
+        accessToken={accessToken}
       />
     </ChartContainer>
   );

@@ -8,10 +8,7 @@ import { Testemonials } from "./components/Testemonials";
 import { FAQ } from "../sharedComponents/FAQ";
 import { becomeASellerGuideQuestions } from "../constants/FAQ's";
 import { SignInForm } from "./components/SignInForm";
-import { getAccessTokenFromCookies } from "../utils/getAccessToken";
-import axios from "axios";
-import { getSession } from "supertokens-node/recipe/session";
-import { getServerSession } from "../actions/getServerSession";
+import prisma from "../libs/prismadb";
 
 export default async function IndexPage() {
   // const currentVendor = await fetch(
@@ -25,7 +22,6 @@ export default async function IndexPage() {
   //     method: "post",
   //   }
   // );
-  // console.log(await currentVendor.json());
 
   return (
     <div className="bg-white">

@@ -9,17 +9,12 @@ import {
   GraphChartsDateRangesDefault,
 } from "@/app/constants/selectOptions";
 
-export const SalesChart = ({ storeId }: { storeId: string }) => {
+export const SalesChart = ({
+  accessToken,
+}: {
+  accessToken: string | undefined;
+}) => {
   const [filter, setFilter] = useState<{}>();
-
-  useEffect(() => {
-    if (storeId) {
-      setFilter({
-        storeId: storeId,
-        status: { $nin: ["Cancelled"] },
-      });
-    }
-  }, [storeId]);
 
   return (
     <ChartContainer>
@@ -28,7 +23,13 @@ export const SalesChart = ({ storeId }: { storeId: string }) => {
         dateRanges={GraphChartsDateRanges}
         dateRangesDefault={GraphChartsDateRangesDefault}
       />
-      <Chart width={900} height={500} filter={filter} chartId={SalesChartId} />
+      <Chart
+        width={900}
+        height={500}
+        filter={filter}
+        chartId={SalesChartId}
+        accessToken={accessToken}
+      />
     </ChartContainer>
   );
 };
