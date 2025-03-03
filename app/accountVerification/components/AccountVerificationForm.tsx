@@ -83,19 +83,19 @@ export const AccountVerificationForm: React.FC<
       currentStep === "Add Profile"
         ? "profile"
         : currentStep === "Add Address"
-        ? "address"
-        : "Id_BankInfo";
+          ? "address"
+          : "Id_BankInfo";
 
     const dataToSend =
       currentStep === "Add Profile"
         ? profile
         : currentStep === "Add Address"
-        ? address
-        : Id_BankInfo;
+          ? address
+          : Id_BankInfo;
 
     const needToUpdateData = needToUpdateInDataBase(
       currentVendor[dataObjectKey],
-      dataToSend
+      dataToSend,
     );
 
     if (!needToUpdateData) {
@@ -109,7 +109,7 @@ export const AccountVerificationForm: React.FC<
         //@ts-ignore
         sellerAccountVerificationSteps[
           sellerAccountVerificationSteps.indexOf(currentStep) + 1
-        ]
+        ],
       );
     }
 
@@ -126,7 +126,7 @@ export const AccountVerificationForm: React.FC<
           //@ts-ignore
           sellerAccountVerificationSteps[
             sellerAccountVerificationSteps.indexOf(currentStep) + 1
-          ]
+          ],
         );
       })
       .finally(() => setIsLoading(false));
@@ -139,7 +139,7 @@ export const AccountVerificationForm: React.FC<
       //@ts-ignore
       sellerAccountVerificationSteps[
         sellerAccountVerificationSteps.indexOf(currentStep) - 1
-      ]
+      ],
     );
   };
 
@@ -154,10 +154,6 @@ export const AccountVerificationForm: React.FC<
       }
 
       <div className="px-96 pb-28">
-        {/* <Button type="button" onClick={() => Session.signOut()}>
-          Sign Out
-        </Button> */}
-
         {currentStep === "Add Profile" && (
           <AddProfile
             goOnNextStep={goOnNextStep}

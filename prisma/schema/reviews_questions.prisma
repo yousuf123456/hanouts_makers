@@ -1,0 +1,76 @@
+model RatingAndReviewBucket {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  count Int @default(0)
+  ratingAndReviews RatingAndReview[]
+  productInformation RatingAndReviewProduct
+
+  storeId String @db.ObjectId
+  store Store @relation(fields: [storeId], references: [id])
+
+  productId String @db.ObjectId
+  product Product @relation(fields: [productId], references: [id]) 
+}
+
+type RatingAndReview {
+  id String @db.ObjectId
+  rating Int
+  review String
+  answer String?
+  answeredAt DateTime?
+  reviewImages String[]
+  createdAt DateTime @default(now())
+
+  userInformation RatingAndReviewUser
+
+  userId String @db.ObjectId
+  storeId String @db.ObjectId
+  productId String @db.ObjectId
+  orderedProductId String @db.ObjectId
+}
+
+type RatingAndReviewUser {
+  name String
+  image String?
+}
+
+type RatingAndReviewProduct {
+  storeName  String
+  image String
+  name String
+  id String
+}
+
+model QuestionsBucket {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  count Int @default(0)
+  questions Question[]
+
+  productInformation QuestionProductInformation 
+
+  storeId String @db.ObjectId
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  productId String @db.ObjectId
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+type Question {
+  id String @db.ObjectId
+  query String
+  answer String?
+  createdAt DateTime 
+  answeredAt DateTime?
+  userInformation QuestionUserInfo
+
+  userId String @db.ObjectId
+}
+
+type QuestionProductInformation {
+  name String
+  image String?
+}
+
+type QuestionUserInfo {
+  name String
+  image String?
+}

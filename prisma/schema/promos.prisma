@@ -1,0 +1,68 @@
+model PromoToolsBucket {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  vouchersCount Int @default(0)
+  freeShippingCount Int @default(0)
+  vouchers Voucher[]
+  freeShipping FreeShipping[]
+
+  storeId String @db.ObjectId()
+  store Store @relation(fields: [storeId], references: [id])
+}
+
+type FreeShipping {
+  id String
+  productIds String[]
+  createdAt DateTime
+  promotionName String
+  storeId String
+  minOrderValue Int
+  endingDate DateTime
+  startingDate DateTime
+  condition FreeShippingCondition
+  applicableOn ApplicableOn
+}
+
+type Voucher {
+  id String
+  createdAt DateTime
+  storeId String
+  voucherName String
+  productIds String[]
+  collectedBy String[]
+  vouchersUsed Int
+  minOrderValue Int
+  totalVouchers Int
+  discountOffValue Int
+  endingDate DateTime
+  startingDate DateTime
+  maxDiscountValue Int?
+  // voucherType VoucherType
+  applicableOn ApplicableOn
+  discountType VoucherDiscountType
+}
+
+type CollectedVoucher {
+  used Boolean @default(false)
+  voucher Voucher
+}
+
+enum FreeShippingCondition {
+  NoCondition
+  MinOrderValue
+}
+
+// enum VoucherType {
+//   CollectibleVoucher
+//   VoucherCode
+// }
+
+enum VoucherDiscountType {
+  MoneyValue
+  PercentageValue
+}
+
+enum ApplicableOn {
+  EntireStore
+  SpecificProducts
+}

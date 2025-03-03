@@ -1,0 +1,109 @@
+model Product {
+  id String @id @default(auto()) @map("_id") @db.ObjectId 
+  SKU String? 
+  name String 
+  image String?
+  variants Json?
+  attributes Json
+  details String[]
+  category String?
+  storeName String
+  keywords  String[]
+  nameVector Float[]
+  description String
+  categoryString String?
+  categoryTreeData Json[]
+  detailedImages String[]
+  highlightsQuillData String?
+  descriptionQuillData String?
+  combinations ProductCombination[]
+  listedInformation ListedInformation[]
+
+  price Int
+  quantity Int
+  promoPrice Int?
+  promoPriceEndingDate DateTime?
+  promoPriceStartingDate DateTime?
+
+  clicks Int @default(0)
+  superTokensUserId String
+  numOfSales Int @default(0)
+  ratingsSum Int @default(0)
+  avgRating Float @default(0)
+  ratingsCount Int @default(0)
+  questionsCount Int @default(0)
+  detailedRatingsCount RatingDistribution
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  productCollectionIds String[] @db.ObjectId
+  productCollections ProductsCollection[] @relation(fields: [productCollectionIds], references: [id])
+
+  storeId String @db.ObjectId
+  store Store @relation(fields: [storeId], references: [id])
+
+  favouritedByIds String[] @db.ObjectId
+  favouritedBy User[] @relation(fields: [favouritedByIds], references: [id])
+
+  questionsBuckets QuestionsBucket[]
+  
+  cartItems CartItem[]
+
+  ratingAndReviewBuckets RatingAndReviewBucket[]
+}
+
+model ProductsCollection {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name String
+  createdAt DateTime @default(now())
+
+  storeId String @db.ObjectId
+  store Store @relation(fields: [storeId], references: [id])
+
+  productIds String[] @db.ObjectId
+  products Product[] @relation(fields: [productIds], references: [id])
+}
+
+model ProductClick {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  superTokensUserId String
+  productId String
+  storeId String
+}
+
+model Category {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  children Category[] @relation("SubCategories")
+
+  parent Category? @relation("SubCategories", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  parentId String? @db.ObjectId
+}
+
+type ProductCombination {
+  id String
+  price Int
+  stock Int
+  promoPrice Int?
+  default Boolean?
+  combination Json
+  promoPriceEndingDate DateTime?
+  promoPriceStartingDate DateTime?
+}
+
+type ListedInformation {
+  heading String
+  informationListPoints String[] 
+}
+
+type RatingDistribution {
+  1 Int @default(0)
+  2 Int @default(0)
+  3 Int @default(0)
+  4 Int @default(0)
+  5 Int @default(0)
+}

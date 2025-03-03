@@ -1,0 +1,627 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["prismaSchemaFolder"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// type FreeShipping {
+//   id String
+//   budget Int // Remove
+//   productIds String[]
+//   createdAt DateTime
+//   promotionName String
+//   minOrderValue Int
+//   endingDate DateTime
+//   startingDate DateTime
+//   condition FreeShippingCondition
+//   applicableOn ApplicableOn
+// }
+
+// enum FreeShippingCondition {
+//   NoCondition
+//   MinOrderValue
+// }
+
+// type Voucher {
+//   id String
+//   createdAt DateTime
+//   storeId String
+//   voucherName String
+//   voucherCode String? // Remove
+//   productIds String[]
+//   collectedBy String[] // Stores user ids
+//   vouchersUsed Int
+//   minOrderValue Int
+//   totalVouchers Int
+//   discountOffValue Int
+//   endingDate DateTime
+//   startingDate DateTime
+//   usageLimitPerCustomer Int // Remove
+//   maxDiscountValue Int?
+//   collectStartDate DateTime // Remove
+//   voucherType VoucherType // Make it only collectible voucher
+//   applicableOn ApplicableOn
+//   discountType VoucherDiscountType
+// }
+
+// type CollectedVoucher {
+//   used Boolean @default(false)
+//   voucher Voucher
+// }
+
+// enum VoucherType {
+//   CollectibleVoucher
+//   VoucherCode
+// }
+// enum VoucherDiscountType {
+//   MoneyValue
+//   PercentageValue
+// }
+// enum ApplicableOn {
+//   EntireStore
+//   SpecificProducts
+// }
+
+// model User {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   authUserId String @unique
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   addressDiary Address[] 
+//   cartItemsCount Int? // Remove
+
+//   collectedVouchers CollectedVoucher[]
+
+//   orders Order[]
+//   accounts Account[]
+//   packages Package[]
+//   cartItems CartItem[]
+//   orderedProducts OrderedProduct[]
+
+//   favouriteItemIds String[] @db.ObjectId
+//   favouriteItems Product[] @relation(fields: [favouriteItemIds], references: [id])
+
+//   searchIds String[] @db.ObjectId
+//   searches Search[] @relation(fields: [searchIds], references: [id])
+//   cancellationRequests CancellationRequest[]
+//   returnRequests ReturnRequest[]
+
+//   browsingHistory BrowsingHistoryProduct[]
+// }
+
+// type BrowsingHistoryProduct {
+//   id String
+//   name String
+//   attributes Json
+//   categoryTreeData Json[]
+// }
+
+// model Account {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   type String
+//   provider String
+//   providerAccountId String
+//   refresh_token String? @db.String
+//   access_token String? @db.String
+//   expires_at Int?
+//   token_type String?
+//   scope String?
+//   id_token String? @db.String
+//   session_state String?
+
+//   userId String @db.ObjectId
+//   user User @relation(fields: [userId], references: [id], onDelete : Cascade)
+
+//   @@unique([provider, providerAccountId])
+// }
+
+// model Search {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   query String
+//   createdAt DateTime @default(now())
+
+//   userIds String[] @db.ObjectId
+//   user User[] @relation(fields: [userIds], references: [id])
+// } 
+
+// model AddressOption {    
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   adress String
+//   zipCode String
+//   country String
+//   province String
+//   city String
+// }
+
+// model Vendor {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   phone String?
+//   profile Json?
+//   address Json?
+//   Id_BankInfo Json?
+//   allInfoProvided Boolean?
+//   superTokensUserId String @unique
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   store Store?
+// }
+
+// model Store {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   url String?
+//   name String
+//   logo String?
+//   banner String?
+//   storePages Json[]
+//   description String?
+//   posRatings Int @default(0)
+//   neuRatings Int @default(0)
+//   negRatings Int @default(0)
+//   ratingsCount Int @default(0)
+//   updatedAt DateTime @updatedAt
+//   createdAt DateTime @default(now())
+
+//   geoChartInfo GeoChartInfo?
+//   profileMetricsInfo ProfileMetricsInfo?
+
+//   vendorId String @db.ObjectId @unique
+//   vendor Vendor @relation(fields: [vendorId], references: [id])    
+
+//   orderIds String[] @db.ObjectId
+//   orders Order[] @relation(fields: [orderIds], references: [id])
+
+//   returnRequests ReturnRequest[]
+//   cancellationRequests CancellationRequest[]
+
+//   products Product[]
+//   packages Package[]
+//   orderedProduct OrderedProduct[]
+//   questionsBuckets QuestionsBucket[]
+//   promoToolsBuckets PromoToolsBucket[]
+//   productCollections ProductsCollection[]
+
+//   ratingAndReviewBuckets RatingAndReviewBucket[]
+// }   
+
+// model ProductsCollection {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+
+//   name String
+//   createdAt DateTime @default(now())
+
+//   storeId String @db.ObjectId
+//   store Store @relation(fields: [storeId], references: [id])
+
+//   productIds String[] @db.ObjectId
+//   products Product[] @relation(fields: [productIds], references: [id])
+
+//   // @@unique([name, storeId])
+// }
+
+// type GeoChartInfo {
+//   refreshedAt DateTime
+//   customersPerData Json[]
+//   customersCountData Json[]
+// }
+
+// type ProfileMetricsInfo {
+//   refreshedAt DateTime
+//   totalSales Int
+//   returnPer Float
+//   successPer Float
+//   cancellationPer Float
+//   productReviewsData ProductReviewsData
+// }
+
+// type ProductReviewsData {
+//   avgRating Float
+//   ratingsCount Int
+//   detailedRatingsCount Json
+// }
+
+// model StoreLayouts {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId 
+//   banner Json
+//   product Json?
+//   promotion Json?
+// }
+
+// type ListedInformation {
+//   heading String
+//   informationListPoints String[] 
+// }
+
+// type RatingDistribution {
+//   1 Int @default(0)
+//   2 Int @default(0)
+//   3 Int @default(0)
+//   4 Int @default(0)
+//   5 Int @default(0)
+// }
+
+// type ProductCombination {
+//   id String
+//   price Int
+//   stock Int
+//   promoPrice Int?
+//   default Boolean?
+//   combination Json
+//   promoPriceEndingDate DateTime?
+//   promoPriceStartingDate DateTime?
+// }
+
+// model Product {
+//   //General Info Section
+//   id String @id @default(auto()) @map("_id") @db.ObjectId 
+//   SKU String?
+//   name String
+//   image String?
+//   variants Json?
+//   attributes Json
+//   details String[]
+//   category String?
+//   storeName String
+//   keywords  String[]
+//   nameVector Float[]
+//   description String
+//   categoryString String?
+//   categoryTreeData Json[]
+//   detailedImages String[]
+//   highlightsQuillData String?
+//   descriptionQuillData String?
+//   combinations ProductCombination[]
+//   listedInformation ListedInformation[]
+
+//   //Price Info Section
+//   price Int
+//   promoPrice Int?
+//   quantity Int
+//   promoPriceEndingDate DateTime?
+//   promoPriceStartingDate DateTime?
+
+//   //Extra Embedded Info Section
+//   clicks Int @default(0)
+//   superTokensUserId String
+//   //Ratings count of each specific rating number
+//   numOfSales Int @default(0)
+//   ratingsSum Int @default(0)
+//   avgRating Float @default(0)
+//   ratingsCount Int @default(0)
+//   questionsCount Int @default(0)
+//   detailedRatingsCount RatingDistribution
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+  
+//   productCollectionIds String[] @db.ObjectId
+//   productCollections ProductsCollection[] @relation(fields: [productCollectionIds], references: [id])
+
+//   storeId String @db.ObjectId
+//   store Store @relation(fields: [storeId], references: [id])
+
+//   favouritedByIds String[] @db.ObjectId
+//   favouritedBy User[] @relation(fields: [favouritedByIds], references: [id])
+
+//   questionsBuckets QuestionsBucket[]
+  
+//   cartItems CartItem[]
+
+//   ratingAndReviewBuckets RatingAndReviewBucket[]
+// }
+
+// model ProductClick {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   createdAt DateTime @default(now())
+//   superTokensUserId String
+//   productId String
+//   storeId String
+// }
+
+// model Category {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   name String
+
+//   children Category[] @relation("SubCategories")
+
+//   parent Category? @relation("SubCategories", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+//   parentId String? @db.ObjectId
+// }
+
+// type Address {
+//   id String
+//   fullName String
+//   phone String
+//   address String
+//   landmark String?
+//   province String
+//   city String
+//   area String
+//   type AddressType
+//   isDefaultBillingAddress Boolean
+//   isDefaultShippingAddress Boolean
+// }
+
+// enum AddressType {
+//   Home
+//   Office
+// }
+
+// model Order { 
+//   id String @id @default(auto()) @map("_id") @db.ObjectId 
+//   createdAt DateTime @default(now())
+//   delieveryFee Int
+//   totalAmmount Int
+//   totalQuantity Int
+//   emailTo String? // Remove
+//   billingAddress Address
+//   shippingAddress Address
+//   // boughtFromLocation String 
+
+//   customerId String @db.ObjectId
+//   customer User @relation(fields: [customerId], references: [id])
+
+//   packages Package[]
+//   returnRequests ReturnRequest[]
+//   cancellationRequests CancellationRequest[]
+  
+//   associatedStoreIds String[] @db.ObjectId
+//   associatedStores Store[] @relation(fields: [associatedStoreIds], references: [id])
+// } 
+
+// model Package {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   status OrderStatus
+//   delieveryFee Int
+//   totalAmmount Int
+//   totalQuantity Int
+//   delieveredAt DateTime?
+//   superTokensUserId String? // Remove
+//   createdAt DateTime @default(now())
+
+//   orderedProducts OrderedProduct[]
+
+//   orderId String @db.ObjectId
+//   order Order @relation(fields: [orderId], references: [id])
+
+//   customerId String @db.ObjectId
+//   customer User @relation(fields: [customerId], references: [id])
+
+//   storeId String @db.ObjectId
+//   store Store @relation(fields: [storeId], references: [id])
+// }
+
+// type OrderedProductInfo {
+//   id String
+//   name String
+//   image String?
+//   storeId String
+//   category String?
+//   storeName String
+// }
+
+// enum OrderStatus {
+//   Shipped
+//   Processing
+//   Delievered
+//   PaymentPending
+
+//   Approved
+//   Rejected
+//   Refunded
+//   RefundPending
+  
+//   Cancelled
+//   CancellationInProcess
+
+//   Returned
+//   ReturnInProcess
+// }
+
+// enum CancellationRequestStatus {
+//   Cancelled // Request has been cancelled
+//   CancellationApproved // Request has been approved
+//   CancellationRejected // Request has been rejected
+//   CancellationRefunded // Payment for the products has been refunded
+//   CancellationInProcess // Cancellation request is under review
+//   CancellationRefundPending // Refund is pending for the approved request
+// }
+
+// enum ReturnRequestStatus {
+//   Returned // Request has been returned
+//   ReturnApproved // Request has been approved
+//   ReturnRejected // Request has been rejected
+//   ReturnRefunded // Payment for the products has been refunded
+//   ReturnInProcess // Return request is under review
+//   ReturnRefundPending // Refund is pending for the approved request
+// }
+
+// model OrderedProduct {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   createdAt DateTime @default(now())
+//   hasBeenReviewed Boolean @default(false)
+//   selectedCombination ProductCombination?
+//   product OrderedProductInfo
+//   delieveredAt DateTime?
+//   priceAtOrderTime Int
+//   status OrderStatus
+//   quantity Int 
+
+//   returnReason String?
+//   cancellationReason String?
+
+//   superTokensUserId String? // Remove
+  
+//   // Relations
+//   customerId String @db.ObjectId
+//   customer User @relation(fields: [customerId], references: [id])
+
+//   packageId String @db.ObjectId
+//   package Package @relation(fields: [packageId], references: [id])
+
+//   cancellationRequestId String? @db.ObjectId
+//   cancellationRequest CancellationRequest? @relation(fields: [cancellationRequestId], references: [id])
+
+//   returnRequestId String? @db.ObjectId
+//   returnRequest ReturnRequest? @relation(fields: [returnRequestId], references: [id])
+
+//   storeId String @db.ObjectId
+//   store Store @relation(fields: [storeId], references: [id])
+// }
+
+// model CancellationRequest {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   createdAt DateTime @default(now())
+//   cancelledOn DateTime?
+//   feedback String?
+//   status CancellationRequestStatus
+
+//   orderedProducts OrderedProduct[]
+
+//   storeId String @db.ObjectId
+//   store Store @relation(fields: [storeId], references: [id])
+
+//   orderId String @db.ObjectId
+//   order Order @relation(fields: [orderId], references: [id])
+
+//   requesterId String @db.ObjectId
+//   requester User @relation(fields: [requesterId], references: [id])
+// }
+
+// model ReturnRequest {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   createdAt DateTime @default(now())
+//   proofImagesData Json[]
+//   feedback String?
+//   returnedOn DateTime?
+//   proofImages String[]
+//   approved Boolean?
+//   rejected Boolean?
+//   status ReturnRequestStatus
+
+//   orderedProducts OrderedProduct[]
+
+//   storeId String @db.ObjectId
+//   store Store @relation(fields: [storeId], references: [id])
+
+//   orderId String @db.ObjectId
+//   order Order @relation(fields: [orderId], references: [id])
+
+//   requesterId String @db.ObjectId
+//   requester User @relation(fields: [requesterId], references: [id])
+// }
+
+// model CartItem {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   quantity Int
+//   selectedCombinationId String?
+
+//   userId String @db.ObjectId
+//   cart User @relation(fields: [userId], references: [id]) 
+
+//   productId String @db.ObjectId
+//   product Product @relation(fields: [productId], references: [id], onDelete : Cascade)
+
+//   @@unique([userId, productId])
+// }
+
+// model PromoToolsBucket {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   createdAt DateTime @default(now())
+//   voucherCount Int @default(0)
+//   bundlesCount Int @default(0)
+//   freeShippingCount Int @default(0)
+//   vouchers Voucher[]
+//   bundles Json[]
+//   freeShipping FreeShipping[]
+
+//   storeId String @db.ObjectId()
+//   store Store @relation(fields: [storeId], references: [id])
+// }
+
+// model RatingAndReviewBucket {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   count Int @default(0)
+//   ratingAndReviews RatingAndReview[]
+//   productInformation RatingAndReviewProduct
+
+//   storeId String @db.ObjectId
+//   store Store @relation(fields: [storeId], references: [id])
+
+//   productId String @db.ObjectId
+//   product Product @relation(fields: [productId], references: [id]) 
+// }
+
+// type RatingAndReview {
+//   id String @db.ObjectId
+//   rating Int
+//   review String
+//   answer String?
+//   answeredAt DateTime?
+//   reviewImages String[]
+//   createdAt DateTime @default(now())
+
+//   userInformation RatingAndReviewUser
+
+//   userId String @db.ObjectId
+//   storeId String @db.ObjectId
+//   productId String @db.ObjectId
+//   orderedProductId String @db.ObjectId
+// }
+
+// type RatingAndReviewUser {
+//   name String
+//   image String?
+// }
+
+// type RatingAndReviewProduct {
+//   storeName  String
+//   image String
+//   name String
+//   id String
+// }
+
+// model QuestionsBucket {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   count Int @default(0)
+//   questions Question[]
+
+//   productInformation QuestionProductInformation 
+
+//   storeId String @db.ObjectId
+//   store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+//   productId String @db.ObjectId
+//   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+// }
+
+// type Question {
+//   id String @db.ObjectId
+//   query String
+//   answer String?
+//   createdAt DateTime 
+//   answeredAt DateTime?
+//   userInformation QuestionUserInfo
+
+//   userId String @db.ObjectId
+// }
+
+// type QuestionProductInformation {
+//   name String
+//   image String?
+// }
+
+// type QuestionUserInfo {
+//   name String
+//   image String?
+// }
+
+

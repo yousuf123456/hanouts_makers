@@ -45,17 +45,12 @@ export const AddAddress: React.FC<AddAddressProps> = ({
             .filter(
               (cityData) =>
                 cityData.admin_name.toLowerCase() ===
-                provinceSelected.toLowerCase()
+                provinceSelected.toLowerCase(),
             )
-            .map((cityData) => cityData.city)
+            .map((cityData) => cityData.city),
         );
     }
   }, [provinceSelected]);
-
-  const address = watch("detailedAddress");
-  useEffect(() => {
-    console.log(address);
-  }, [address]);
 
   return (
     <div className="flex flex-col gap-8">

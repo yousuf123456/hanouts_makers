@@ -1,26 +1,35 @@
 import { getServerSession } from "./getServerSession";
-import prisma from "../libs/prismadb";
+import prisma from "../_libs/prismadb";
 import { VendorType } from "../types";
+import { getSSRSession } from "../utils/withSession";
 
 interface Params {
+  userSTId?: string;
   getStore?: boolean;
+  getMediaCenter?: boolean;
+  getStoreFields?: { [key: string]: any };
 }
 
 export const getCurrentVendor = async (params: Params = {}) => {
-  const session = await getServerSession();
-  if (!session) return null;
+  const { getStore, getStoreFields, userSTId } = params;
+  let session;
 
-  const { getStore } = params;
+  if (!userSTId) {
+    session = (await getSSRSession()).session;
+    if (!session) return null;
+  }
 
-  const currentVendorIdST = session.getUserId();
+  const currentVendorIdST = session?.getUserId();
 
   const currentVendor = (await prisma.vendor.findUnique({
     where: {
-      superTokensUserId: currentVendorIdST,
+      superTokensUserId: userSTId || currentVendorIdST,
     },
 
     include: {
-      ...(getStore ? { store: { select: { id: true } } } : {}),
+      ...(getStore
+        ? { store: { select: { id: true, ...(getStoreFields || {}) } } }
+        : {}),
     },
   })) as unknown as VendorType;
 

@@ -1,0 +1,80 @@
+model Vendor {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  // phone String?
+  // profile Json?
+  // address Json?
+  // Id_BankInfo Json?
+  // allInfoProvided Boolean?
+  // superTokensUserId String @unique
+  authVendorId String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store?
+}
+
+model Store {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  // url String?
+  name String?
+  logo String?
+  // banner String?
+  // storePages Json[]
+  description String?
+  // posRatings Int @default(0)
+  // neuRatings Int @default(0)
+  // negRatings Int @default(0)
+  ratingsCount Int @default(0)
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  // geoChartInfo GeoChartInfo?
+  // profileMetricsInfo ProfileMetricsInfo?
+
+  authVendorId String @unique
+  vendorId String @db.ObjectId @unique
+  vendor Vendor @relation(fields: [vendorId], references: [id])    
+
+  orderIds String[] @db.ObjectId
+  orders Order[] @relation(fields: [orderIds], references: [id])
+
+  returnRequests ReturnRequest[]
+  cancellationRequests CancellationRequest[]
+
+  products Product[]
+  packages Package[]
+  orderedProduct OrderedProduct[]
+  questionsBuckets QuestionsBucket[]
+  promoToolsBuckets PromoToolsBucket[]
+  productCollections ProductsCollection[]
+
+  ratingAndReviewBuckets RatingAndReviewBucket[]
+}   
+
+// type GeoChartInfo {
+//   refreshedAt DateTime
+//   customersPerData Json[]
+//   customersCountData Json[]
+// }
+
+// type ProfileMetricsInfo {
+//   refreshedAt DateTime
+//   totalSales Int
+//   returnPer Float
+//   successPer Float
+//   cancellationPer Float
+//   productReviewsData ProductReviewsData
+// }
+
+type ProductReviewsData {
+  avgRating Float
+  ratingsCount Int
+  detailedRatingsCount Json
+}
+
+// model StoreLayouts {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId 
+//   banner Json
+//   product Json?
+//   promotion Json?
+// }

@@ -1,16 +1,28 @@
-import prisma from "../../libs/prismadb";
+import prisma from "../../_libs/prismadb";
 import { getCurrentVendor } from "../getCurrentVendor";
 
 export const getVendorReviewsCount = async () => {
   const currentVendor = await getCurrentVendor({ getStore: true });
 
-  if (!currentVendor) return null;
+  if (!currentVendor?.store) return null;
 
-  const reviewsCount = await prisma.ratingAndReview.count({
-    where: {
-      storeId: currentVendor.store?.id,
-    },
-  });
+  const reviewsCountData = (await prisma.ratingAndReviewBucket.aggregateRaw({
+    pipeline: [
+      {
+        $match: {
+          storeId: { $oid: currentVendor.store.id },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          count: {
+            $sum: "$count",
+          },
+        },
+      },
+    ],
+  })) as any;
 
-  return reviewsCount;
+  return reviewsCountData[0]?.count || 0;
 };

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import prisma from "../../libs/prismadb";
+import prisma from "../../_libs/prismadb";
+import { CategoryType } from "@/app/types";
 
 export async function POST(req: Request) {
   const { parentId, getChilds } = await req.json();
@@ -33,13 +34,21 @@ export async function POST(req: Request) {
         _id: 1,
         name: 1,
         hasChilds: 1,
+        parentId: 1,
       },
     },
   ];
 
-  const categories = await prisma.category.aggregateRaw({
+  const categories = (await prisma.category.aggregateRaw({
     pipeline: pipeline,
-  });
+  })) as any;
 
-  return NextResponse.json(categories);
+  const prismaStructured = categories.map((category: any) => ({
+    id: category._id.$oid,
+    name: category.name,
+    hasChilds: category.hasChilds,
+    parentId: category.parentId ? category.parentId.$oid : null,
+  }));
+
+  return NextResponse.json(prismaStructured);
 }

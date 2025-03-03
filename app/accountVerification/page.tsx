@@ -8,8 +8,8 @@ export default async function AccountVerificationPage() {
   const currentVendor = await getCurrentVendor();
 
   return (
-    <div className="flex flex-col gap-6 py-6">
-      <div className="px-16 pb-8">
+    <div className="flex max-h-screen flex-col gap-6 overflow-y-auto">
+      <div className="px-16 py-8">
         <Handouts />
       </div>
 

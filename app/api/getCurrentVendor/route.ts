@@ -1,7 +1,7 @@
 import { withSession } from "@/middleware";
 import { NextRequest, NextResponse } from "next/server";
 
-import prisma from "../../libs/prismadb";
+import prisma from "../../_libs/prismadb";
 
 export async function POST(req: NextRequest) {
   return withSession(req, async (session) => {

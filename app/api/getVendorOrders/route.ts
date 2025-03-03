@@ -2,14 +2,22 @@ import { getCurrentVendor } from "@/app/actions/getCurrentVendor";
 import { NextResponse } from "next/server";
 import { getPaginationQueries } from "../getVendorProducts/route";
 
-import prisma from "../../libs/prismadb";
+import prisma from "../../_libs/prismadb";
 
 export async function POST(req: Request) {
   try {
-    const currentVendor = await getCurrentVendor({ getStore: true });
+    const userSTId = req.headers.get("x-user-id");
+
+    if (!userSTId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+    const currentVendor = await getCurrentVendor({
+      getStore: true,
+      userSTId: userSTId,
+    });
 
     if (!currentVendor) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      return new NextResponse("Vendor Data Not Found", { status: 404 });
     }
 
     const { pageSize, pageNumber, cursor, goingNext, serverSort, tieBreaker } =

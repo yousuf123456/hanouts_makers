@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "../../libs/prismadb";
+import prisma from "../../_libs/prismadb";
 
 export async function POST(req: Request) {
   const { categoryId } = await req.json();

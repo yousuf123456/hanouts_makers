@@ -1,22 +1,23 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter, Poppins, Nunito } from "next/font/google";
-import { NextUiProvider } from "./context/NextUiProvider";
-import { SuperTokensProvider } from "./context/SuperTokensProvider";
-import { ProtectedLayer } from "./context/ProtectedLayer";
-import { TanstackProvider } from "./context/TanstackProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+import { GeistSans } from "geist/font/sans";
+import { Inter, Nunito } from "next/font/google";
+// import { NextUiProvider } from "./context/NextUiProvider";
+// import { SuperTokensProvider } from "./context/SuperTokensProvider";
+// // import { ProtectedLayer } from "./context/ProtectedLayer";
+// import { TanstackProvider } from "./context/TanstackProvider";
+// import { DnDProvider } from "./context/DnDProvider";
+// import { ToasterContext } from "./context/ToasterContext";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-poppins",
-});
+import NextTopLoader from "nextjs-toploader";
+import { Providers } from "./_components/Providers";
+
+const inter = Inter({ weight: "variable", subsets: ["latin"] });
 
 const nunito = Nunito({
   subsets: ["latin"],
-  weight: "400",
+  weight: "variable",
   variable: "--font-nunito",
 });
 
@@ -31,15 +32,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${poppins.variable} ${nunito.variable}`}>
-      <body className={inter.className}>
-        <SuperTokensProvider>
-          <TanstackProvider>
-            <NextUiProvider>
-              <ProtectedLayer>{children}</ProtectedLayer>
-            </NextUiProvider>
-          </TanstackProvider>
-        </SuperTokensProvider>
+    <html lang="en" className={`${nunito.variable} ${GeistSans.className}`}>
+      <body className="overflow-y-hidden">
+        <NextTopLoader color="#000000" showSpinner={false} shadow={false} />
+
+        {/* <SuperTokensProvider> */}
+        {/* <TanstackProvider> */}
+        {/* <NextUiProvider> */}
+        {/* <DnDProvider> */}
+        {/* <ProtectedLayer> */}
+        <Providers>
+          {/* <Header /> */}
+          <main className="h-screen overflow-y-auto">{children}</main>
+          {/* <Footer /> */}
+        </Providers>
+        {/* </ProtectedLayer> */}
+        {/* </DnDProvider> */}
+        {/* </NextUiProvider> */}
+        {/* </TanstackProvider> */}
+        {/* </SuperTokensProvider> */}
       </body>
     </html>
   );

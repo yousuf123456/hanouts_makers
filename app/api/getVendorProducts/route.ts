@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "../../libs/prismadb";
+import prisma from "../../_libs/prismadb";
 import { getCurrentVendor } from "@/app/actions/getCurrentVendor";
 
 interface getPaginationQueriesProps {
@@ -89,14 +89,45 @@ export const getPaginationQueries = ({
 
 export async function POST(req: NextRequest) {
   try {
-    const currentVendor = await getCurrentVendor({ getStore: true });
-    if (!currentVendor) {
+    const userSTId = req.headers.get("x-user-id");
+
+    if (!userSTId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { pageSize, pageNumber, cursor, goingNext, serverSort, tieBreaker } =
-      await req.json();
+    const currentVendor = await getCurrentVendor({
+      getStore: true,
+      userSTId: userSTId,
+    });
+    if (!currentVendor) {
+      return new NextResponse("Vendor Data Not Found", { status: 401 });
+    }
 
+    const {
+      pageSize,
+      cursor,
+      goingNext,
+      serverSort,
+      tieBreaker,
+      getDraftProducts,
+    } = await req.json();
+
+    const projectObject = getDraftProducts
+      ? {
+          name: 1,
+          image: 1,
+          createdAt: 1,
+          updatedAt: 1,
+        }
+      : {
+          name: 1,
+          id: 1,
+          SKU: 1,
+          price: 1,
+          image: 1,
+          createdAt: 1,
+          quantity: 1,
+        };
     const pipeline = [
       {
         $match: {
@@ -109,14 +140,7 @@ export async function POST(req: NextRequest) {
       },
 
       {
-        $project: {
-          name: 1,
-          id: 1,
-          SKU: 1,
-          price: 1,
-          createdAt: 1,
-          quantity: 1,
-        },
+        $project: projectObject,
       },
     ] as any;
 
@@ -141,9 +165,11 @@ export async function POST(req: NextRequest) {
     if (paginationQueries.finalSortStage)
       pipeline.push(paginationQueries.finalSortStage);
 
-    const vendorProducts = await prisma.product.aggregateRaw({
-      pipeline: pipeline,
-    });
+    const vendorProducts = getDraftProducts
+      ? await prisma.draftProduct.aggregateRaw({ pipeline: pipeline })
+      : await prisma.product.aggregateRaw({
+          pipeline: pipeline,
+        });
 
     return NextResponse.json(vendorProducts);
   } catch (e) {

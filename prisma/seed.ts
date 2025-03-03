@@ -1,12 +1,25 @@
-import prisma from "../app/libs/prismadb";
+import prisma from "../app/_libs/prismadb";
 
 async function main() {
-  await prisma.attribute.updateMany({
-    where: {
-      select: true,
-    },
+  await prisma.order.updateMany({
     data: {
-      multiSelect: true,
+      customerDetails: {
+        name: "Shairawat Hassan",
+        image:
+          "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yb0tVWnJGM1RETUR0MXdVRUlJZ2R1RTFLdmoifQ",
+        email: "shairawat@gmail.com",
+      },
+    },
+  });
+
+  await prisma.package.updateMany({
+    data: {
+      customerDetails: {
+        name: "Shairawat Hassan",
+        image:
+          "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yb0tVWnJGM1RETUR0MXdVRUlJZ2R1RTFLdmoifQ",
+        email: "shairawat@gmail.com",
+      },
     },
   });
 }

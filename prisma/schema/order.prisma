@@ -1,0 +1,175 @@
+type CustomerDetails {
+  name String
+  image String?
+  email String?
+  phone String?
+}
+
+model Order { 
+  id String @id @default(auto()) @map("_id") @db.ObjectId 
+  createdAt DateTime @default(now())
+  delieveryFee Int
+  totalAmmount Int
+  totalQuantity Int
+  billingAddress Address
+  shippingAddress Address
+
+  customerDetails CustomerDetails
+
+  customerId String @db.ObjectId
+  customer User @relation(fields: [customerId], references: [id])
+
+  packages Package[]
+  returnRequests ReturnRequest[]
+  cancellationRequests CancellationRequest[]
+  
+  associatedStoreIds String[] @db.ObjectId
+  associatedStores Store[] @relation(fields: [associatedStoreIds], references: [id])
+} 
+
+model Package {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  status OrderStatus
+  delieveryFee Int
+  totalAmmount Int
+  totalQuantity Int
+  delieveredAt DateTime?
+  createdAt DateTime @default(now())
+
+  vendorApproval VendorApproval?
+
+  orderedProducts OrderedProduct[]
+
+  orderId String @db.ObjectId
+  order Order @relation(fields: [orderId], references: [id])
+
+  customerDetails CustomerDetails
+
+  customerId String @db.ObjectId
+  customer User @relation(fields: [customerId], references: [id])
+
+  storeId String @db.ObjectId
+  store Store @relation(fields: [storeId], references: [id])
+}
+
+enum VendorApproval {
+  Approved
+  Rejected
+}
+
+model OrderedProduct {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  hasBeenReviewed Boolean @default(false)
+  selectedCombination ProductCombination?
+  product OrderedProductInfo
+  delieveredAt DateTime?
+  priceAtOrderTime Int
+  status OrderStatus
+  quantity Int 
+
+  returnReason String?
+  cancellationReason String?
+  
+  customerId String @db.ObjectId
+  customer User @relation(fields: [customerId], references: [id])
+
+  packageId String @db.ObjectId
+  package Package @relation(fields: [packageId], references: [id])
+
+  cancellationRequestId String? @db.ObjectId
+  cancellationRequest CancellationRequest? @relation(fields: [cancellationRequestId], references: [id])
+
+  returnRequestId String? @db.ObjectId
+  returnRequest ReturnRequest? @relation(fields: [returnRequestId], references: [id])
+
+  storeId String @db.ObjectId
+  store Store @relation(fields: [storeId], references: [id])
+}
+
+enum OrderStatus {
+  Shipped
+  Processing
+  Delievered
+  PaymentPending
+
+  Approved
+  Rejected
+  Refunded
+  RefundPending
+  
+  Cancelled
+  CancellationInProcess
+
+  Returned
+  ReturnInProcess
+}
+
+type OrderedProductInfo {
+  id String
+  name String
+  image String?
+  storeId String
+  category String?
+  storeName String
+}
+
+model CancellationRequest {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  cancelledOn DateTime?
+  feedback String?
+  status CancellationRequestStatus
+
+  orderedProducts OrderedProduct[]
+
+  storeId String @db.ObjectId
+  store Store @relation(fields: [storeId], references: [id])
+
+  orderId String @db.ObjectId
+  order Order @relation(fields: [orderId], references: [id])
+
+  requesterId String @db.ObjectId
+  requester User @relation(fields: [requesterId], references: [id])
+}
+
+model ReturnRequest {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  proofImagesData Json[]
+  feedback String?
+  returnedOn DateTime?
+  proofImages String[]
+  approved Boolean?
+  rejected Boolean?
+  status ReturnRequestStatus
+
+  orderedProducts OrderedProduct[]
+
+  storeId String @db.ObjectId
+  store Store @relation(fields: [storeId], references: [id])
+
+  orderId String @db.ObjectId
+  order Order @relation(fields: [orderId], references: [id])
+
+  requesterId String @db.ObjectId
+  requester User @relation(fields: [requesterId], references: [id])
+}
+
+enum CancellationRequestStatus {
+  Cancelled // Request has been cancelled
+  CancellationApproved // Request has been approved
+  CancellationRejected // Request has been rejected
+  CancellationRefunded // Payment for the products has been refunded
+  CancellationInProcess // Cancellation request is under review
+  CancellationRefundPending // Refund is pending for the approved request
+}
+
+enum ReturnRequestStatus {
+  Returned // Request has been returned
+  ReturnApproved // Request has been approved
+  ReturnRejected // Request has been rejected
+  ReturnRefunded // Payment for the products has been refunded
+  ReturnInProcess // Return request is under review
+  ReturnRefundPending // Refund is pending for the approved request
+}

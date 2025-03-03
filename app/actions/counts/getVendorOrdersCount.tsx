@@ -1,4 +1,4 @@
-import prisma from "../../libs/prismadb";
+import prisma from "../../_libs/prismadb";
 import { getCurrentVendor } from "../getCurrentVendor";
 
 export const getVendorOrdersCount = async () => {

@@ -1,5 +1,3 @@
-const { nextui } = require("@nextui-org/react");
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -18,6 +16,12 @@ module.exports = {
       },
     },
     extend: {
+      containers: {
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+      },
       colors: {
         themeBlue: "#2998FF",
         themeSecondary: "#1e1b4b",
@@ -75,15 +79,14 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       boxShadow: {
-        cardShadow: "0 0 2px rgba(0, 0, 0, 0.3)",
+        mediaCenterContainerShadow: "0 0 3px rgba(34, 197, 94, 0.6)",
+        cardShadow: "0 0 3px rgba(0, 0, 0, 0.3)",
         whiteCardShadow: "0 0 3px rgba(255, 255, 255, 0.7)",
         cardHoverShadow: "0px 0px 10px rgba(0,0,0, 0.5)",
         panelFootersShadow: "0px 0px 10px 4px rgba(0,0,0,0.06)",
       },
       fontFamily: {
-        text: ["var(--font-poppins)"],
-        heading: ["var(--font-poppins)"],
-        superHeading: ["var(--font-nunito)"],
+        nunito: "var(--font-nunito)",
       },
       aspectRatio: {
         auto: "auto",
@@ -91,7 +94,7 @@ module.exports = {
     },
   },
   plugins: [
-    nextui({ defaultTheme: "light", defaultExtendTheme: "light" }),
+    require("@tailwindcss/container-queries"),
     require("tailwindcss-animate"),
     require("tailwind-scrollbar"),
     require("tailwindcss-gradients"),

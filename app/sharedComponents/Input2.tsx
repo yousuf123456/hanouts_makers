@@ -9,6 +9,7 @@ import {
 
 import { HiEyeOff } from "react-icons/hi";
 import { cn } from "../utils/cn";
+import { TextInput } from "../_components/TextInput";
 
 interface Input2Props {
   id: string;
@@ -84,38 +85,23 @@ export const Input2: React.FC<Input2Props> = ({
   );
 
   return (
-    <div className="w-full flex flex-col gap-1 items-start">
-      <p className="text-slate-600 text-xs font-text font-semibold">{label}</p>
+    <div className="flex w-full flex-col items-start gap-1">
+      <p className="font-text text-xs font-semibold text-slate-600">{label}</p>
 
-      <div className="w-full relative">
+      <div className="relative w-full">
         {icon ? icon : ""}
-        <input
-          {...register(id, {
-            required,
-          })}
+        <TextInput
+          id={id}
           type={type}
+          register={register}
           placeholder={placeholder}
           disabled={disabled}
           onFocus={onFocus}
-          onBlur={onBlur}
-          className={cn(
-            input2Styling,
-            fieldValue.length
-              ? "ring-2 ring-green-400 bg-white"
-              : "bg-slate-100 focus-visible:ring-2 focus-visible:ring-green-400",
-            isRequirementsMatched === false &&
-              fieldValue.length &&
-              "ring-2 ring-red-500",
-            error && "focus-visible:ring-red-500 ring-red-500 ring-2",
-            showPassNotMatchingError &&
-              "focus-visible:ring-red-500 ring-red-500 ring-2",
-            isLoading || disabled ? "ring-opacity-30" : ""
-          )}
         />
       </div>
 
       {showPassNotMatchingError && (
-        <p className="text-red-500 text-xs font-text font-semibold">
+        <p className="font-text text-xs font-semibold text-red-500">
           Passwords does not match
         </p>
       )}

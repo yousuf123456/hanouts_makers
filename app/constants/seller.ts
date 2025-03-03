@@ -6,6 +6,7 @@ import {
   FileBarChart,
   PhoneCallIcon,
   Settings,
+  Tag,
 } from "lucide-react";
 import { routes } from "./routes";
 import { HiLightBulb, HiSupport, HiTruck } from "react-icons/hi";
@@ -76,6 +77,7 @@ export const sellerAccountVerificationSteps = [
 ];
 
 const dashboardRoutes = routes;
+
 export const dashboardSideBarLinks = [
   {
     label: "Product",
@@ -94,10 +96,6 @@ export const dashboardSideBarLinks = [
         label: "Add Product",
         href: dashboardRoutes.addProduct,
       },
-      {
-        label: "Bulk Add/Edit Products",
-        href: dashboardRoutes.bulkAddEditProducts,
-      },
     ],
   },
 
@@ -113,6 +111,10 @@ export const dashboardSideBarLinks = [
       {
         label: "Manage Reviews",
         href: dashboardRoutes.manageReviews,
+      },
+      {
+        label: "Manage Questions",
+        href: dashboardRoutes.manageQuestions,
       },
       {
         label: "Customer Returns",
@@ -133,6 +135,32 @@ export const dashboardSideBarLinks = [
       {
         label: "Geo Analytics",
         href: dashboardRoutes.geoAnalytics,
+      },
+    ],
+  },
+
+  {
+    label: "Seller Tools",
+    Icon: Tag,
+    root: true,
+    childs: [
+      {
+        label: "Vouchers",
+        href: dashboardRoutes.voucher,
+      },
+      {
+        label: "Free Shipping",
+        href: dashboardRoutes.freeShipping,
+      },
+      {
+        label: "Bundles",
+        href: dashboardRoutes.bundles,
+      },
+      {
+        root: true,
+        openInNewWindow: true,
+        label: "Store Decoration",
+        href: dashboardRoutes.storeDecoration,
       },
     ],
   },
